@@ -26,16 +26,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   @override
   initState(){
-    _glutenFree = mealProvider.filters['gluten'] as bool;
-    _lactoseFree = mealProvider.filters['lactose'] as bool;
-    _vegan = mealProvider.filters['vegan'] as bool;
-    _vegetarian = mealProvider.filters['vegetarian'] as bool;
+    _glutenFree = filterMealProvider.filters['gluten'] as bool;
+    _lactoseFree = filterMealProvider.filters['lactose'] as bool;
+    _vegan = filterMealProvider.filters['vegan'] as bool;
+    _vegetarian = filterMealProvider.filters['vegetarian'] as bool;
     super.initState();
   }
 
 
-  FilterMealProvider mealProvider = Provider.of<FilterMealProvider>(NavigationService.navigatorKey.currentContext as BuildContext);
-
+  FilterMealProvider filterMealProvider = Provider.of<FilterMealProvider>(NavigationService.navigatorKey.currentContext as BuildContext);
 
 
 
@@ -55,7 +54,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 'vegan': _vegan,
                 'vegetarian': _vegetarian,
               };
-                mealProvider.getFilters(selectedFilters);
+               filterMealProvider.getFilters(selectedFilters);
               },
               icon: const Icon(Icons.save),
             ),

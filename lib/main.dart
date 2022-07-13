@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/provider/favorite_meal_provider.dart';
 import 'package:meal_app/provider/filter_meal_provider.dart';
 import 'package:meal_app/routes/routes.dart';
 import 'package:meal_app/values/strings.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => FilterMealProvider()),
+    ChangeNotifierProvider(create: (_) => FavoriteMealProvider()),
   ], child: const MyApp()));
 }
 

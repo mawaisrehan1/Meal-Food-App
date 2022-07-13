@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/model/meal/meal_data.dart';
 import 'package:meal_app/values/colors.dart';
 import 'package:meal_app/values/dimensions.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
+import '../provider/favorite_meal_provider.dart';
 
 class MealDetailScreen extends StatelessWidget {
   const MealDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    FavoriteMealProvider favoriteMealProvider =
+        Provider.of<FavoriteMealProvider>(
+            NavigationService.navigatorKey.currentContext as BuildContext, listen: false);
+
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final selectedMeal = dummyMeals.firstWhere((meal) => meal.id == mealId);
 
@@ -21,67 +28,75 @@ class MealDetailScreen extends StatelessWidget {
         MediaQuery.of(context).padding.top);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: appbar,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.5,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: appbar,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: (height - appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.5,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              buildSectionTitle('Ingredients'),
-              buildContainer(
-                context,
-                ListView.builder(
-                  itemCount: selectedMeal.ingredients.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: Theme.of(context).accentColor,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 05),
-                        child: Text(selectedMeal.ingredients[index]),
-                      ),
-                    );
-                  },
-                ),
+            ),
+            buildSectionTitle('Ingredients'),
+            buildContainer(
+              context,
+              ListView.builder(
+                itemCount: selectedMeal.ingredients.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Theme.of(context).accentColor,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 05),
+                      child: Text(selectedMeal.ingredients[index]),
+                    ),
+                  );
+                },
               ),
-              buildSectionTitle('Steps'),
-              buildContainer(
-                context,
-                ListView.builder(
-                  itemCount: selectedMeal.steps.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            child: Text('# ${(index + 1)}'),
-                          ),
-                          title: Text(selectedMeal.steps[index]),
+            ),
+            buildSectionTitle('Steps'),
+            buildContainer(
+              context,
+              ListView.builder(
+                itemCount: selectedMeal.steps.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Text('# ${(index + 1)}'),
                         ),
-                        const Divider()
-                      ],
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+                        title: Text(selectedMeal.steps[index]),
+                      ),
+                      const Divider()
+                    ],
+                  );
+                },
+              ),
+            )
+          ],
         ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: (){
-        Navigator.of(context).pop(mealId);
-      },
-      child: const Icon(Icons.delete),
-    ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          favoriteMealProvider.toggleFavorite(mealId);
+
+        },
+        child: Consumer<FavoriteMealProvider>(
+          builder: (_, a, __) {
+            return  Icon(
+              favoriteMealProvider.isMealFavorite(mealId) ? Icons.star : Icons.star_border,
+            );
+          },
+        ),
+
+
+      ),
     );
   }
 

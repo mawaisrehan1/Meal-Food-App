@@ -14,7 +14,7 @@ class FilterMealProvider extends ChangeNotifier{
     'vegetarian': false,
   };
 
-//  Map<String, bool> filter = filters;
+
 
   List<Meal>availableMeals = dummyMeals;
 

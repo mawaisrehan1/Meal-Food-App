@@ -29,10 +29,10 @@ class Routes{
     return {
       tabsScreen:(context) => const TabsScreen(),
       categoriesScreen:(context) => const CategoriesScreen(),
-      favoritesScreen:(context) => const FavoritesScreen(),
-      categoryMealsScreen:(context) =>  CategoryMealScreen(),
+      favoritesScreen:(context) =>  FavoritesScreen(),
+      categoryMealsScreen:(context) =>  const CategoryMealScreen(),
       mealsDetailScreen:(context) =>  const MealDetailScreen(),
-      filtersScreen:(context) =>   FiltersScreen(),
+      filtersScreen:(context) =>   const FiltersScreen(),
     };
   }
 
